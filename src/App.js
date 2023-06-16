@@ -1,38 +1,43 @@
 import React, { useState } from "react";
 import "./App.css";
+import Task from "./Components/Task";
 
 function App() {
-  const username = "shreyap";
-  const password = "password";
+  const [taskName, setTaskName] = useState("");
+  const [time, setTime] = useState("");
+  const [taskList, setTaskList] = useState([]);
 
-  const [usernameState, setUsernameState] = useState("");
-  const [passwordState, setPasswordState] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  function login() {
-    if (usernameState === username && passwordState === password) {
-      setLoggedIn(true);
-    }
-  }
+  const addTask = () => {
+    setTaskList([...taskList, {task: taskName, time: time}]);
+    setTaskName("");
+    setTime("");
+  };
 
   return (
     <div className="App">
-      <h1>Login</h1>
+      <h1>Todo List</h1>
+      <label>Task Name:</label>
       <input
         type="text"
-        onChange={(event) => {
-          setUsernameState(event.target.value);
+        id="task"
+        onChange={(e) => {
+          setTaskName(e.target.value);
         }}
       />
+      <label>Time:</label>
       <input
-        type="password"
-        onChange={(event) => {
-          setPasswordState(event.target.value);
+        type="text"
+        id="time"
+        onChange={(e) => {
+          setTime(e.target.value);
         }}
       />
 
-      <button onClick={login}>Submit</button>
-      {loggedIn && <h1>Logged In</h1>}
+      <button onClick={addTask}>Add</button>
+    
+    {taskList.map((task)=> {
+      return <Task taskName={task.task} time={task.time} />
+    })}
     </div>
   );
 }
